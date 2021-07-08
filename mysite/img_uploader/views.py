@@ -1,11 +1,10 @@
-import requests
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.files.images import get_image_dimensions
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
 from io import BytesIO
 from urllib.parse import urlparse
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import requests
 
 
 from .models import Image
@@ -51,15 +50,15 @@ def new_image_view(request):
     if request.method == "POST":
         form = NewImageForm(request.POST, request.FILES)
         if form.is_valid():
-            if (form.cleaned_data['imageFile'] and
-                    not form.cleaned_data['imageName']):
-                image = form.cleaned_data['imageFile']
+            if (form.cleaned_data['Image'] and
+                    not form.cleaned_data['Link']):
+                image = form.cleaned_data['Image']
                 name = image.name
                 width, height = get_image_dimensions(image)
 
-            elif (form.cleaned_data['imageName']
-                  and not form.cleaned_data['imageFile']):
-                image = get_remote_image(form.cleaned_data['imageName'])
+            elif (form.cleaned_data['Link']
+                  and not form.cleaned_data['Image']):
+                image = get_remote_image(form.cleaned_data['Link'])
                 if image is None:
                     error = "Invalid link"
                     return render(request, "new.html",
@@ -73,18 +72,18 @@ def new_image_view(request):
                 return render(request, "new.html",
                               {'form': form, 'error': error})
 
-            result = Image.objects.create(image=image, name=name, width=width,
+            result = Image.objects.create(image=image, title=name, width=width,
                                           height=height)
-            return redirect("img_view", img_id=result.pk)
+            return redirect("resize", image_id=result.pk)
 
     else:
         form = NewImageForm()
     return render(request, "new.html", {'form': form})
 
 
-def resize_image_view(request, image_pk):
+def resize_image_view(request, image_id):
     """View for resizing images"""
-    image = get_object_or_404(Image, pk=image_pk)
+    image = get_object_or_404(Image, pk=image_id)
     proportions = image.width / image.height
     image_size = f"{image.width} * {image.height}"
 
@@ -96,7 +95,7 @@ def resize_image_view(request, image_pk):
         else:
             new_size.height = form.cleaned_data['width'] / proportions
         new_size.save()
-        return redirect("image_view", img_id=image.pk)
+        return redirect("resize", image_id=image.pk)
 
     context = {"form": form, "image": image, "image_size": image_size}
     return render(request, "resize.html", context)

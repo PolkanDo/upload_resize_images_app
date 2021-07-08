@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Новое изображение{% endblock %}
+{% block header %}Новое изображение{% endblock %}
+{% block content %}
 
-</body>
-</html>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% if error %}
+        <p style="color: red">{{error}}</p>
+    {% endif %}
+    {{ form.as_p }}
+    <button type="submit" >Отправить</button>
+</form>
+
+{% endblock %}

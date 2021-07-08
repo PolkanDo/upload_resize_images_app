@@ -5,12 +5,12 @@
 
 {% if images %}
     {% for image in images %}
-        <p><a href="{% url 'image_view' image.pk %}">{{ image.name }}</a></p>
+        <p><a href="{% url 'resize' image.pk %}">{{ image.title }}</a></p>
     {% endfor %}
 {% else %}
     <p>Нет доступных изображений</p>
 {% endif %}
 
-<a href="{% url 'new_image' %}">Добавить изображение</a>
+<a href="{% url 'new' %}">Добавить изображение</a>
 
 {% endblock %}
