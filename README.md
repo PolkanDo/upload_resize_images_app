@@ -9,5 +9,6 @@ cd mysite
 
 python manage.py migrate
 
-Запуск сервера
+## Запуск сервера
+
 cd upload_resize_images_app/mysite python manage.py runserver
