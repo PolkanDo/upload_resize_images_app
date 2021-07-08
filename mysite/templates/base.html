@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Page{% endblock %}</title>
+</head>
+
+<body>
+
+    <main>
+        <div class="container">
+            {% if request.get_full_path != "/" %}
+            <a href="{% url 'index' %}">Назад к списку</a>
+            {% endif %}
+            <h1>{% block header %}Header{% endblock %}</h1>
+            {% block content %}
+            <!-- Содержимое страницы -->
+            {% endblock %}
+        </div>
+    </main>
+
+</body>
+
+</html>

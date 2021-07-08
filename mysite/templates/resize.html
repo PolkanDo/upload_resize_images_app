@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{image.name}}{% endblock %}
+{% block header %}{{image.name}}{% endblock %}
+{% block content %}
+
+<form method="POST">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" >Отправить</button>
+</form>
+
+{% load thumbnail %}
+{% thumbnail image.image size upscale=True as im %}
+    <a href="{{ im.url }}"></a><img src="{{ im.url }}" style="max-width: 300px; max-height: 300px;"></a>
+{% endthumbnail %}
+
+{% endblock %}

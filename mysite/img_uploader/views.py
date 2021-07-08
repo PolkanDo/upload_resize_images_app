@@ -99,4 +99,4 @@ def resize_image_view(request, image_pk):
         return redirect("image_view", img_id=image.pk)
 
     context = {"form": form, "image": image, "image_size": image_size}
-    return render(request, "image_view.html", context)
+    return render(request, "resize.html", context)
