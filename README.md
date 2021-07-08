@@ -1,6 +1,6 @@
 # upload_resize_images_app
 ## Запуск проекта
-###Первоначальная установка
+### Первоначальная установка
 cd upload_resize_images_app
 
 pip install -r requirements.txt
